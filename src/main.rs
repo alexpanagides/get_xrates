@@ -1,14 +1,16 @@
 // use std::alloc::System;
-// use serde::Deserialize;
+use serde::Deserialize;
 use reqwest::Error;
+use serde_json::Value;
 use tokio;
 
-// #[derive(Deserialize, Debug)]
 #[allow(dead_code)]
-// struct User {
-//     login: String,
-//     id: u32,
-// }
+
+#[derive(Deserialize)]
+struct ExResponse {
+    success: bool
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     // let request_url = format!("https://api.github.com/repos/{owner}/{repo}/stargazers",
@@ -20,9 +22,14 @@ async fn main() -> Result<(), Error> {
 
     // if false {
     if response.status().is_success() {
-        // let text = String::new();
         let text = response.text().await?;
+        // TODO get json
+        // let v: Value = serde_json::from_str(&*text)?;
+        // println!("SUCCESS: {}",v["success"]);
+
         // let users: Vec<User> = response.json().await?;
+        // TODO convert to json and look for success == true
+        //  if not true then don't overwrite existing file
         println!("{}", text);
 
         std::fs::write(
